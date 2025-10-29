@@ -318,54 +318,60 @@ function BooksView() {
           )}
         </Row>
 
-        {showSuggest && suggestions.length > 0 && (
-          <div
-            style={{
-              position: "absolute",
-              top: 44,
-              left: 0,
-              right: 0,
-              border: "1px solid #e5e7eb",
-              borderRadius: 8,
-              background: "white",
-              maxHeight: 300,
-              overflowY: "auto",
-              zIndex: 10,
-            }}
-          >
-            {suggestions.map(s => (
-              <div
-                key={s.id}
-                onClick={() => chooseSuggestion(s)}
-                style={{
-                  padding: 10,
-                  cursor: "pointer",
-                  display: "flex",
-                  gap: 10,
-                  borderBottom: "1px solid #f3f4f6",
-                }}
-              >
-                {s.thumbnail && (
-                  <img
-                    src={s.thumbnail}
-                    width={32}
-                    height={44}
-                    style={{ borderRadius: 4 }}
-                    onError={(e)=>{(e.currentTarget as HTMLImageElement).style.display = "none"}}
-                  />
-                )}
-                <div>
-                  <strong>{s.title}</strong>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>
-                    {s.author || "Unknown"}
-                    {s.publishedDate ? ` • ${s.publishedDate}` : ""}
-                    {s.isbn ? ` • ISBN ${s.isbn}` : " • No ISBN"}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {showSuggest && (isSearching || suggestions.length > 0) && (
+  <div
+    style={{
+      position: "absolute",
+      top: 44,
+      left: 0,
+      right: 0,
+      border: "1px solid #e5e7eb",
+      borderRadius: 8,
+      background: "white",
+      maxHeight: 300,
+      overflowY: "auto",
+      zIndex: 10,
+    }}
+  >
+    {isSearching && (
+      <div style={{ padding: 10, color: "#6b7280", fontSize: 14 }}>
+        Searching…
+      </div>
+    )}
+
+    {!isSearching && suggestions.map(s => (
+      <div
+        key={s.id}
+        onClick={() => chooseSuggestion(s)}
+        style={{
+          padding: 10,
+          cursor: "pointer",
+          display: "flex",
+          gap: 10,
+          borderBottom: "1px solid #f3f4f6",
+        }}
+      >
+        {s.thumbnail && (
+          <img
+            src={s.thumbnail}
+            width={32}
+            height={44}
+            style={{ borderRadius: 4 }}
+          />
         )}
+        <div>
+          <strong>{s.title}</strong>
+          <div style={{ fontSize: 12, color: "#6b7280" }}>
+            {s.author || "Unknown"}
+            {s.publishedDate ? ` • ${s.publishedDate}` : ""}
+            {s.isbn ? ` • ISBN ${s.isbn}` : " • No ISBN"}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
       </div>
 
       {authorId === 0 && title.trim() !== "" && (
